@@ -21,7 +21,7 @@
 
 ### 1.1 Game Engine
 
-**Unity 2022 LTS**
+**Unity 6 (6000.3.6f1)** *(Updated from original plan)*
 - Strong PC + Steam support
 - Mature UI tooling
 - Excellent C# ecosystem
@@ -70,7 +70,7 @@ Alternative for pure isolation:
 
 ### 1.5 Data Format
 
-- **JSON** via `System.Text.Json` (not Unity's JsonUtility)
+- **JSON** via `Newtonsoft.Json` (com.unity.nuget.newtonsoft-json package)
 - Human‑readable
 - Easy AI generation
 - Easy validation
@@ -736,51 +736,61 @@ Golden‑seed tests required.
 
 ## 11) Development Milestones
 
-### Milestone A: Headless Simulation Core
+### Milestone A: Headless Simulation Core ✅ COMPLETE
 **Goal:** Complete game loop with all actions, runnable from tests
 
 Deliverables:
-- [ ] `RunState` class with all fields (including split score, action tracking)
-- [ ] `SeededRandom` wrapper
-- [ ] `TurnResolver` with full resolution order
-- [ ] Core actions: ONE MORE TURN, CASH OUT
-- [ ] Player actions: BANK, PUSH, SACRIFICE
-- [ ] Bust logic (with at-risk vs banked score handling)
-- [ ] Golden-seed test (known input → known output)
+- [x] `RunState` class with all fields (including split score, action tracking)
+- [x] `SeededRandom` wrapper
+- [x] `TurnResolver` with full resolution order
+- [x] Core actions: ONE MORE TURN, CASH OUT
+- [x] Player actions: BANK, PUSH, SACRIFICE
+- [x] Bust logic (with at-risk vs banked score handling)
+- [x] Golden-seed test (known input → known output)
 
 Exit criteria: Can simulate full run with all actions from CLI/test with deterministic results.
 
 ---
 
-### Milestone B: Data-Driven Modifiers
+### Milestone B: Data-Driven Modifiers ✅ COMPLETE
 **Goal:** Modifiers loaded from JSON, not hardcoded
 
 Deliverables:
-- [ ] Modifier JSON schema + loader
-- [ ] Schema validator (fail fast on bad JSON)
-- [ ] Effect system (add, multiply, set, conditional)
-- [ ] 5 starter modifiers in JSON
-- [ ] Tests: modifier stacking, priority order, conditions
+- [x] Modifier JSON schema + loader
+- [x] Schema validator (fail fast on bad JSON)
+- [x] Effect system (add, multiply, set, conditional)
+- [x] 21 modifiers in JSON (6 common, 9 uncommon, 6 rare)
+- [x] Tests: modifier stacking, priority order, conditions
 
 Exit criteria: Add new modifier by editing JSON only, no code changes.
 
 ---
 
-### Milestone C: Playable UI
+### Milestone C: Playable UI 🔄 IN PROGRESS
 **Goal:** Mouse-clickable game in Unity with all actions
 
 Deliverables:
-- [ ] Main game screen (uGUI)
-- [ ] Score display (at-risk + banked + total)
-- [ ] Risk meter visualization (color transitions)
-- [ ] Modifier list with sacrifice buttons and tooltips
-- [ ] Turn breakdown display (including push multiplier)
-- [ ] Action buttons: BANK 25%, BANK 50%
-- [ ] Action buttons: PUSH (with stack counter)
-- [ ] Core buttons: ONE MORE TURN, CASH OUT
-- [ ] Button state management (disable when unavailable)
-- [ ] Game over screen (bust vs cash out, show banked score saved)
-- [ ] Modifier draft screen (pick 3 from 5)
+- [x] Main game screen (uGUI)
+- [x] Score display (at-risk + banked + total)
+- [x] Risk meter visualization
+- [x] Modifier list display
+- [ ] Modifier sacrifice buttons (UI exists, needs testing)
+- [x] Turn breakdown display (including push multiplier)
+- [x] Action buttons: BANK 25%, BANK 50%
+- [x] Action buttons: PUSH (with stack counter)
+- [x] Core buttons: ONE MORE TURN, CASH OUT
+- [x] Button state management (disable when unavailable)
+- [x] Game over screen (bust vs cash out)
+- [x] Modifier draft screen (pick 3 from 5)
+- [ ] Risk meter color transitions (green → yellow → red)
+- [ ] Polish: tooltips, better feedback
+
+**Current Status (Jan 2026):**
+- Basic UI flow works: Main Menu → Draft → Game → Game Over
+- All core actions functional (One More Turn, Cash Out, Bank, Push)
+- Draft screen shows clickable modifier cards
+- Need to regenerate scene with latest SceneSetup for improved layout
+- UI is functional but needs polish pass
 
 Exit criteria: Full run playable with all actions from draft to end.
 

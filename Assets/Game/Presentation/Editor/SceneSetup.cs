@@ -145,64 +145,94 @@ namespace OneMoreTurn.Presentation.Editor
             go.SetActive(false);
             var gameUI = go.AddComponent<GameUI>();
 
-            // Top bar - Turn and Scores
+            // === TOP: Compact score bar ===
             var topBar = new GameObject("TopBar");
             topBar.transform.SetParent(go.transform, false);
-            SetRectTransform(topBar, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, -50), new Vector2(0, 80));
-            topBar.AddComponent<HorizontalLayoutGroup>().padding = new RectOffset(20, 20, 10, 10);
+            SetRectTransform(topBar, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, -25), new Vector2(0, 50));
+            var topLayout = topBar.AddComponent<HorizontalLayoutGroup>();
+            topLayout.padding = new RectOffset(15, 15, 5, 5);
+            topLayout.childAlignment = TextAnchor.MiddleCenter;
 
-            var turnText = CreateText(topBar.transform, "TurnText", "Turn 1", 28, TextAnchor.MiddleLeft);
-            var atRiskText = CreateText(topBar.transform, "AtRiskScore", "At Risk: 0", 24, TextAnchor.MiddleCenter);
-            var bankedText = CreateText(topBar.transform, "BankedScore", "Banked: 0", 24, TextAnchor.MiddleCenter);
-            var totalText = CreateText(topBar.transform, "TotalScore", "Total: 0", 28, TextAnchor.MiddleRight);
+            var turnText = CreateText(topBar.transform, "TurnText", "Turn 1", 18, TextAnchor.MiddleLeft);
+            var atRiskText = CreateText(topBar.transform, "AtRiskScore", "At Risk: 0", 16, TextAnchor.MiddleCenter);
+            var bankedText = CreateText(topBar.transform, "BankedScore", "Banked: 0", 16, TextAnchor.MiddleCenter);
+            var totalText = CreateText(topBar.transform, "TotalScore", "Total: 0", 18, TextAnchor.MiddleRight);
 
-            // Risk meter
+            // === TURN RESULT (prominent, above risk) ===
+            var turnResult = CreateText(go.transform, "TurnResult", "Click ONE MORE TURN to begin", 18, TextAnchor.MiddleCenter);
+            SetRectTransform(turnResult, new Vector2(0.5f, 0.72f), new Vector2(0.5f, 0.72f), Vector2.zero, new Vector2(400, 30));
+            turnResult.GetComponent<Text>().color = new Color(0.4f, 0.9f, 0.4f);
+
+            // === CENTER: Risk meter (main focus) ===
             var riskPanel = new GameObject("RiskPanel");
             riskPanel.transform.SetParent(go.transform, false);
-            SetRectTransform(riskPanel, new Vector2(0.5f, 0.75f), new Vector2(0.5f, 0.75f), Vector2.zero, new Vector2(500, 80));
+            SetRectTransform(riskPanel, new Vector2(0.5f, 0.58f), new Vector2(0.5f, 0.58f), Vector2.zero, new Vector2(350, 60));
+
+            var riskLabel = CreateText(riskPanel.transform, "RiskLabel", "DANGER", 12, TextAnchor.MiddleCenter);
+            SetRectTransform(riskLabel, new Vector2(0.5f, 0.9f), new Vector2(0.5f, 0.9f), Vector2.zero, new Vector2(100, 20));
+            riskLabel.GetComponent<Text>().color = new Color(1f, 0.5f, 0.5f);
 
             var riskSlider = CreateSlider(riskPanel.transform, "RiskSlider");
-            SetRectTransform(riskSlider, new Vector2(0.5f, 0.6f), new Vector2(0.5f, 0.6f), Vector2.zero, new Vector2(400, 30));
+            SetRectTransform(riskSlider, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(300, 20));
 
-            var riskText = CreateText(riskPanel.transform, "RiskText", "Risk: 0%", 24, TextAnchor.MiddleCenter);
-            SetRectTransform(riskText, new Vector2(0.5f, 0.2f), new Vector2(0.5f, 0.2f), Vector2.zero, new Vector2(200, 30));
+            var riskText = CreateText(riskPanel.transform, "RiskText", "0%", 20, TextAnchor.MiddleCenter);
+            SetRectTransform(riskText, new Vector2(0.5f, 0.1f), new Vector2(0.5f, 0.1f), Vector2.zero, new Vector2(80, 25));
 
-            // Push button
-            var pushBtn = CreateButton(go.transform, "PushButton", "Push (0/2)", new Color(0.7f, 0.5f, 0.1f, 1f));
-            SetRectTransform(pushBtn, new Vector2(0.5f, 0.6f), new Vector2(0.5f, 0.6f), Vector2.zero, new Vector2(180, 45));
-
-            // Turn breakdown
+            // === TURN BREAKDOWN (small, left side) ===
             var breakdownPanel = new GameObject("BreakdownPanel");
             breakdownPanel.transform.SetParent(go.transform, false);
-            SetRectTransform(breakdownPanel, new Vector2(0.2f, 0.4f), new Vector2(0.2f, 0.4f), Vector2.zero, new Vector2(250, 150));
+            SetRectTransform(breakdownPanel, new Vector2(0.12f, 0.55f), new Vector2(0.12f, 0.55f), Vector2.zero, new Vector2(100, 80));
             var breakdownLayout = breakdownPanel.AddComponent<VerticalLayoutGroup>();
             breakdownLayout.childAlignment = TextAnchor.UpperLeft;
+            breakdownLayout.spacing = 2;
 
-            var baseGain = CreateText(breakdownPanel.transform, "BaseGain", "Base: +0", 18, TextAnchor.MiddleLeft);
-            var pushBonus = CreateText(breakdownPanel.transform, "PushBonus", "Push: x1.0", 18, TextAnchor.MiddleLeft);
-            var finalGain = CreateText(breakdownPanel.transform, "FinalGain", "Gain: +0", 20, TextAnchor.MiddleLeft);
-            var riskChange = CreateText(breakdownPanel.transform, "RiskChange", "Risk: +0%", 18, TextAnchor.MiddleLeft);
+            var baseGain = CreateText(breakdownPanel.transform, "BaseGain", "+0", 11, TextAnchor.MiddleLeft);
+            var pushBonus = CreateText(breakdownPanel.transform, "PushBonus", "x1.0", 11, TextAnchor.MiddleLeft);
+            var finalGain = CreateText(breakdownPanel.transform, "FinalGain", "= +0", 12, TextAnchor.MiddleLeft);
+            finalGain.GetComponent<Text>().color = new Color(0.5f, 1f, 0.5f);
+            var riskChange = CreateText(breakdownPanel.transform, "RiskChange", "+0% risk", 11, TextAnchor.MiddleLeft);
+            riskChange.GetComponent<Text>().color = new Color(1f, 0.6f, 0.6f);
 
-            // Modifiers container (right side)
+            // === MODIFIERS (compact, right side) ===
             var modContainer = new GameObject("ModifierContainer");
             modContainer.transform.SetParent(go.transform, false);
-            SetRectTransform(modContainer, new Vector2(0.85f, 0.5f), new Vector2(0.85f, 0.5f), Vector2.zero, new Vector2(250, 400));
+            SetRectTransform(modContainer, new Vector2(0.88f, 0.5f), new Vector2(0.88f, 0.5f), Vector2.zero, new Vector2(155, 200));
             var modLayout = modContainer.AddComponent<VerticalLayoutGroup>();
-            modLayout.spacing = 10;
+            modLayout.spacing = 5;
             modLayout.childForceExpandHeight = false;
 
-            // Bottom buttons
-            var btnPanel = new GameObject("ButtonPanel");
-            btnPanel.transform.SetParent(go.transform, false);
-            SetRectTransform(btnPanel, new Vector2(0.5f, 0.12f), new Vector2(0.5f, 0.12f), Vector2.zero, new Vector2(700, 120));
-            var btnLayout = btnPanel.AddComponent<HorizontalLayoutGroup>();
-            btnLayout.spacing = 15;
-            btnLayout.childAlignment = TextAnchor.MiddleCenter;
+            // === MAIN ACTIONS (center, prominent) ===
+            var mainBtnPanel = new GameObject("MainButtons");
+            mainBtnPanel.transform.SetParent(go.transform, false);
+            SetRectTransform(mainBtnPanel, new Vector2(0.5f, 0.32f), new Vector2(0.5f, 0.32f), Vector2.zero, new Vector2(400, 50));
+            var mainBtnLayout = mainBtnPanel.AddComponent<HorizontalLayoutGroup>();
+            mainBtnLayout.spacing = 20;
+            mainBtnLayout.childAlignment = TextAnchor.MiddleCenter;
 
-            var bank25 = CreateButton(btnPanel.transform, "Bank25", "Bank 25%", new Color(0.3f, 0.3f, 0.5f, 1f));
-            var bank50 = CreateButton(btnPanel.transform, "Bank50", "Bank 50%", new Color(0.3f, 0.3f, 0.5f, 1f));
-            var oneMore = CreateButton(btnPanel.transform, "OneMoreTurn", "ONE MORE TURN", new Color(0.2f, 0.5f, 0.2f, 1f));
-            var cashOut = CreateButton(btnPanel.transform, "CashOut", "CASH OUT", new Color(0.5f, 0.4f, 0.1f, 1f));
+            var oneMore = CreateButton(mainBtnPanel.transform, "OneMoreTurn", "ONE MORE TURN", new Color(0.2f, 0.55f, 0.2f, 1f), 16);
+            oneMore.GetComponent<RectTransform>().sizeDelta = new Vector2(170, 45);
+            var cashOut = CreateButton(mainBtnPanel.transform, "CashOut", "CASH OUT", new Color(0.6f, 0.5f, 0.15f, 1f), 16);
+            cashOut.GetComponent<RectTransform>().sizeDelta = new Vector2(140, 45);
+
+            // === SECONDARY ACTIONS (below, smaller) ===
+            var secBtnPanel = new GameObject("SecondaryButtons");
+            secBtnPanel.transform.SetParent(go.transform, false);
+            SetRectTransform(secBtnPanel, new Vector2(0.5f, 0.18f), new Vector2(0.5f, 0.18f), Vector2.zero, new Vector2(450, 35));
+            var secBtnLayout = secBtnPanel.AddComponent<HorizontalLayoutGroup>();
+            secBtnLayout.spacing = 10;
+            secBtnLayout.childAlignment = TextAnchor.MiddleCenter;
+
+            var pushBtn = CreateButton(secBtnPanel.transform, "PushButton", "PUSH (0/2)", new Color(0.5f, 0.35f, 0.1f, 1f), 12);
+            pushBtn.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 30);
+            var bank25 = CreateButton(secBtnPanel.transform, "Bank25", "Bank 25%", new Color(0.25f, 0.25f, 0.4f, 1f), 12);
+            bank25.GetComponent<RectTransform>().sizeDelta = new Vector2(90, 30);
+            var bank50 = CreateButton(secBtnPanel.transform, "Bank50", "Bank 50%", new Color(0.25f, 0.25f, 0.4f, 1f), 12);
+            bank50.GetComponent<RectTransform>().sizeDelta = new Vector2(90, 30);
+
+            // === HINT TEXT (bottom) ===
+            var hint = CreateText(go.transform, "HintText", "Click ONE MORE TURN to gain points (risk goes up). Click CASH OUT to end and keep your score. If risk hits 100% you BUST!", 11, TextAnchor.MiddleCenter);
+            SetRectTransform(hint, new Vector2(0.5f, 0.06f), new Vector2(0.5f, 0.06f), Vector2.zero, new Vector2(600, 30));
+            hint.GetComponent<Text>().color = new Color(0.6f, 0.6f, 0.65f);
 
             // Wire up GameUI
             var so = new SerializedObject(gameUI);
@@ -219,6 +249,7 @@ namespace OneMoreTurn.Presentation.Editor
             so.FindProperty("_pushBonusText").objectReferenceValue = pushBonus.GetComponent<Text>();
             so.FindProperty("_finalGainText").objectReferenceValue = finalGain.GetComponent<Text>();
             so.FindProperty("_riskChangeText").objectReferenceValue = riskChange.GetComponent<Text>();
+            so.FindProperty("_turnResultText").objectReferenceValue = turnResult.GetComponent<Text>();
             so.FindProperty("_modifierContainer").objectReferenceValue = modContainer.transform;
             so.FindProperty("_bank25Button").objectReferenceValue = bank25.GetComponent<Button>();
             so.FindProperty("_bank50Button").objectReferenceValue = bank50.GetComponent<Button>();
@@ -319,34 +350,46 @@ namespace OneMoreTurn.Presentation.Editor
         private static void CreateDraftOptionPrefab()
         {
             var go = new GameObject("DraftOption");
-            var option = go.AddComponent<DraftOptionUI>();
 
             var bg = go.AddComponent<Image>();
             bg.color = new Color(0.2f, 0.2f, 0.25f, 1f);
 
+            // Add button to root - whole card is clickable
+            var btn = go.AddComponent<Button>();
+            btn.targetGraphic = bg;
+            btn.transition = Selectable.Transition.ColorTint;
+            var colors = btn.colors;
+            colors.highlightedColor = new Color(0.3f, 0.3f, 0.35f, 1f);
+            colors.pressedColor = new Color(0.4f, 0.4f, 0.45f, 1f);
+            btn.colors = colors;
+
+            // Add DraftOptionUI after Button (since it has RequireComponent)
+            var option = go.AddComponent<DraftOptionUI>();
+
             var rect = go.GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(170, 350);
+            rect.sizeDelta = new Vector2(150, 140);
 
             var layout = go.AddComponent<VerticalLayoutGroup>();
-            layout.padding = new RectOffset(10, 10, 15, 15);
-            layout.spacing = 10;
+            layout.padding = new RectOffset(12, 12, 10, 10);
+            layout.spacing = 6;
             layout.childForceExpandHeight = false;
+            layout.childForceExpandWidth = true;
             layout.childAlignment = TextAnchor.UpperCenter;
 
-            // Rarity
-            var rarityText = CreateText(go.transform, "Rarity", "Common", 14, TextAnchor.MiddleCenter);
+            // Rarity (small label at top)
+            var rarityText = CreateText(go.transform, "Rarity", "Common", 11, TextAnchor.MiddleCenter);
+            rarityText.GetComponent<RectTransform>().sizeDelta = new Vector2(130, 16);
 
-            // Name
-            var nameText = CreateText(go.transform, "Name", "Modifier", 18, TextAnchor.MiddleCenter);
+            // Name (bold title)
+            var nameText = CreateText(go.transform, "Name", "Modifier", 14, TextAnchor.MiddleCenter);
+            nameText.GetComponent<Text>().fontStyle = FontStyle.Bold;
+            nameText.GetComponent<RectTransform>().sizeDelta = new Vector2(130, 22);
 
-            // Description
-            var descText = CreateText(go.transform, "Description", "Description goes here", 14, TextAnchor.UpperCenter);
+            // Description (multi-line, smaller)
+            var descText = CreateText(go.transform, "Description", "Description goes here", 11, TextAnchor.UpperCenter);
             var descRect = descText.GetComponent<RectTransform>();
-            descRect.sizeDelta = new Vector2(150, 150);
-            descText.GetComponent<Text>().color = new Color(0.8f, 0.8f, 0.8f);
-
-            // Select button
-            var selectBtn = CreateButton(go.transform, "Select", "SELECT", new Color(0.2f, 0.5f, 0.2f, 1f));
+            descRect.sizeDelta = new Vector2(130, 70);
+            descText.GetComponent<Text>().color = new Color(0.75f, 0.75f, 0.75f);
 
             // Wire up
             var so = new SerializedObject(option);
@@ -354,7 +397,6 @@ namespace OneMoreTurn.Presentation.Editor
             so.FindProperty("_descriptionText").objectReferenceValue = descText.GetComponent<Text>();
             so.FindProperty("_rarityText").objectReferenceValue = rarityText.GetComponent<Text>();
             so.FindProperty("_background").objectReferenceValue = bg;
-            so.FindProperty("_selectButton").objectReferenceValue = selectBtn.GetComponent<Button>();
             so.ApplyModifiedProperties();
 
             // Save prefab

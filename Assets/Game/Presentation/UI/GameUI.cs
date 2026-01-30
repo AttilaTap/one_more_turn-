@@ -38,6 +38,7 @@ namespace OneMoreTurn.Presentation.UI
         [SerializeField] private Text _pushBonusText;
         [SerializeField] private Text _finalGainText;
         [SerializeField] private Text _riskChangeText;
+        [SerializeField] private Text _turnResultText; // Shows prominent "You gained X points!"
 
         [Header("Modifiers")]
         [SerializeField] private Transform _modifierContainer;
@@ -117,18 +118,33 @@ namespace OneMoreTurn.Presentation.UI
                 _breakdownPanel.SetActive(breakdown != null);
             }
 
+            // Update prominent turn result text
+            if (_turnResultText)
+            {
+                if (breakdown != null)
+                {
+                    _turnResultText.text = $"+{breakdown.FinalGain} points!  (+{breakdown.FinalRiskDelta * 100:F1}% risk)";
+                    _turnResultText.gameObject.SetActive(true);
+                }
+                else
+                {
+                    _turnResultText.text = "Click ONE MORE TURN to begin";
+                    _turnResultText.gameObject.SetActive(true);
+                }
+            }
+
             if (breakdown == null) return;
 
-            if (_baseGainText) _baseGainText.text = $"Base: +{breakdown.BaseGain}";
+            if (_baseGainText) _baseGainText.text = $"+{breakdown.BaseGain}";
             if (_pushBonusText)
             {
                 _pushBonusText.gameObject.SetActive(breakdown.PushMultiplier > 1f);
-                _pushBonusText.text = $"Push: x{breakdown.PushMultiplier:F1}";
+                _pushBonusText.text = $"x{breakdown.PushMultiplier:F1}";
             }
-            if (_finalGainText) _finalGainText.text = $"Gain: +{breakdown.FinalGain}";
+            if (_finalGainText) _finalGainText.text = $"= +{breakdown.FinalGain}";
             if (_riskChangeText)
             {
-                _riskChangeText.text = $"Risk: +{breakdown.FinalRiskDelta * 100:F1}%";
+                _riskChangeText.text = $"+{breakdown.FinalRiskDelta * 100:F1}% risk";
             }
         }
 
