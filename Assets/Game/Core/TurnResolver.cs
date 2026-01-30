@@ -54,7 +54,7 @@ namespace OneMoreTurn.Core
             }
 
             taxRate = Math.Max(0, taxRate); // Tax can't go negative
-            long taxedAmount = (long)(amountToBank * (1 - taxRate));
+            long taxedAmount = (long)Math.Round(amountToBank * (1 - taxRate));
 
             newState.AtRiskScore -= amountToBank;
             newState.BankedScore += taxedAmount;
@@ -159,7 +159,7 @@ namespace OneMoreTurn.Core
 
                     // OnSacrifice effects multiply the benefits
                     riskReduction = ApplyOperation(riskReduction, effect.Operation, effect.Value);
-                    scoreGain = (long)ApplyOperation(scoreGain, effect.Operation, effect.Value);
+                    scoreGain = (long)Math.Round(ApplyOperation(scoreGain, effect.Operation, effect.Value));
                 }
             }
 
@@ -253,7 +253,7 @@ namespace OneMoreTurn.Core
 
             // Phase 5: Apply gain modifiers
             currentGain = ApplyGainModifiers(newState, currentGain, result.GainContributions);
-            result.FinalGain = (long)Math.Max(0, currentGain);
+            result.FinalGain = (long)Math.Round(Math.Max(0, currentGain));
 
             // Phase 6: Apply risk modifiers
             float currentRisk = result.BaseRiskDelta;
@@ -320,7 +320,7 @@ namespace OneMoreTurn.Core
         private long CalculateBaseGain(int turn)
         {
             // baseGain = 10 * (1 + turn * 0.15)
-            return (long)(10 * (1 + turn * 0.15f));
+            return (long)Math.Round(10 * (1 + turn * 0.15f));
         }
 
         private float CalculateBaseRiskDelta(int turn)
@@ -430,7 +430,7 @@ namespace OneMoreTurn.Core
             }
 
             // Sort by priority (lower = earlier)
-            list.Sort((a, b) => a.effect.Priority.CompareTo(b.effect.Priority));
+            list.Sort((a, b) => a.Item2.Priority.CompareTo(b.Item2.Priority));
             return list;
         }
 

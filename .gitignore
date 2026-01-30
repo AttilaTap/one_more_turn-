@@ -90,4 +90,20 @@ Desktop.ini
 # Plastic SCM
 *.plastic
 *.ignore
+
+# Claude Code
 .claude/
+
+# Unity 6 / Burst
+[Bb]urst[Dd]ebug[Ii]nformation_DoNotShip/
+[Bb]ee_backend/
+
+# Test results
+TestResults/
+*.xml
+
+# Coverage
+CodeCoverage/
+
+# OS generated
+*.stackdump

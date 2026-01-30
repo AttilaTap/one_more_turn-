@@ -66,8 +66,8 @@ namespace OneMoreTurn.Tests
             var state = RunState.NewRun(12345);
             var (_, result) = _resolver.ResolveTurn(state);
 
-            // Turn 1: baseGain = 10 * (1 + 1 * 0.15) = 10 * 1.15 = 11.5 -> 11
-            Assert.AreEqual(11, result.BaseGain);
+            // Turn 1: baseGain = 10 * (1 + 1 * 0.15) = 10 * 1.15 = 11.5 -> 12 (rounded)
+            Assert.AreEqual(12, result.BaseGain);
         }
 
         [Test]
@@ -335,8 +335,8 @@ namespace OneMoreTurn.Tests
 
             var (_, result) = _resolver.ResolveTurn(state);
 
-            // Base gain of 11 * 1.5 = 16.5 -> 16
-            Assert.AreEqual(16, result.FinalGain);
+            // Base gain of 12 * 1.5 = 18
+            Assert.AreEqual(18, result.FinalGain);
         }
 
         [Test]
@@ -369,7 +369,7 @@ namespace OneMoreTurn.Tests
             stateLow.ActiveModifiers.Add(new ModifierInstance { ModifierId = "risk_taker" });
 
             var (_, resultLow) = _resolver.ResolveTurn(stateLow);
-            Assert.AreEqual(11, resultLow.FinalGain); // No multiplier
+            Assert.AreEqual(12, resultLow.FinalGain); // No multiplier, base gain = 12
 
             // Test above threshold
             var stateHigh = RunState.NewRun(12345);
@@ -377,7 +377,7 @@ namespace OneMoreTurn.Tests
             stateHigh.ActiveModifiers.Add(new ModifierInstance { ModifierId = "risk_taker" });
 
             var (_, resultHigh) = _resolver.ResolveTurn(stateHigh);
-            Assert.AreEqual(22, resultHigh.FinalGain); // 2x multiplier
+            Assert.AreEqual(24, resultHigh.FinalGain); // 2x multiplier: 12 * 2 = 24
         }
 
         [Test]

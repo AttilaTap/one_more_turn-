@@ -34,7 +34,7 @@ jobs:
         with:
           projectPath: .
           testMode: EditMode
-          unityVersion: 2022.3.21f1
+          unityVersion: 6000.3.6f1
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: Edit Mode Test Results
 
