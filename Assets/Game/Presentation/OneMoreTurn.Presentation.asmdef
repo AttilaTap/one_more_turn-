@@ -1,0 +1,16 @@
+{
+    "name": "OneMoreTurn.Presentation",
+    "rootNamespace": "OneMoreTurn.Presentation",
+    "references": [
+        "OneMoreTurn.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
