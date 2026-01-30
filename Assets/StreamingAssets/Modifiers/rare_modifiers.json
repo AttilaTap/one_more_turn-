@@ -1,0 +1,104 @@
+{
+  "modifiers": [
+    {
+      "id": "safety_net",
+      "name": "Safety Net",
+      "description": "First bust becomes 99% risk instead",
+      "rarity": "Rare",
+      "tags": ["risk", "defensive", "one-shot"],
+      "effects": [
+        {
+          "hook": "OnBust",
+          "operation": "Set",
+          "value": 0.99,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "last_stand",
+      "name": "Last Stand",
+      "description": "+500% gain when risk > 90%",
+      "rarity": "Rare",
+      "tags": ["gain", "risk", "conditional"],
+      "effects": [
+        {
+          "hook": "OnComputeGain",
+          "operation": "Multiply",
+          "value": 6.0,
+          "priority": 100,
+          "condition": {
+            "type": "RiskAbove",
+            "threshold": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "id": "compound_interest",
+      "name": "Compound Interest",
+      "description": "Banked score grows +5% per turn",
+      "rarity": "Rare",
+      "tags": ["bank", "scaling"],
+      "effects": [
+        {
+          "hook": "OnPostTurn",
+          "operation": "AddPercent",
+          "value": 0.05,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "martyr",
+      "name": "Martyr",
+      "description": "Sacrifice effects are doubled",
+      "rarity": "Rare",
+      "tags": ["sacrifice", "utility"],
+      "effects": [
+        {
+          "hook": "OnSacrifice",
+          "operation": "Multiply",
+          "value": 2.0,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "phoenix_ash",
+      "name": "Phoenix Ash",
+      "description": "When you sacrifice a modifier, reduce risk by 10%",
+      "rarity": "Rare",
+      "tags": ["sacrifice", "risk"],
+      "effects": [
+        {
+          "hook": "OnSacrifice",
+          "operation": "Add",
+          "value": -0.1,
+          "priority": 50
+        }
+      ]
+    },
+    {
+      "id": "all_in",
+      "name": "All In",
+      "description": "+300% gain, but risk always increases by +10% flat minimum",
+      "rarity": "Rare",
+      "tags": ["gain", "risk", "aggressive"],
+      "effects": [
+        {
+          "hook": "OnComputeGain",
+          "operation": "Multiply",
+          "value": 4.0,
+          "priority": 100
+        },
+        {
+          "hook": "OnComputeRiskDelta",
+          "operation": "Add",
+          "value": 0.1,
+          "priority": 200
+        }
+      ]
+    }
+  ]
+}

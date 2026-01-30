@@ -1,0 +1,122 @@
+{
+  "modifiers": [
+    {
+      "id": "greedy_gambler",
+      "name": "Greedy Gambler",
+      "description": "+50% gain, +25% risk",
+      "rarity": "Common",
+      "tags": ["gain", "risk", "aggressive"],
+      "effects": [
+        {
+          "hook": "OnComputeGain",
+          "operation": "Multiply",
+          "value": 1.5,
+          "priority": 100
+        },
+        {
+          "hook": "OnComputeRiskDelta",
+          "operation": "Multiply",
+          "value": 1.25,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "lucky_charm",
+      "name": "Lucky Charm",
+      "description": "-15% risk delta",
+      "rarity": "Common",
+      "tags": ["risk", "defensive"],
+      "effects": [
+        {
+          "hook": "OnComputeRiskDelta",
+          "operation": "Multiply",
+          "value": 0.85,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "slow_burn",
+      "name": "Slow Burn",
+      "description": "-30% gain, -40% risk",
+      "rarity": "Common",
+      "tags": ["gain", "risk", "defensive"],
+      "effects": [
+        {
+          "hook": "OnComputeGain",
+          "operation": "Multiply",
+          "value": 0.7,
+          "priority": 100
+        },
+        {
+          "hook": "OnComputeRiskDelta",
+          "operation": "Multiply",
+          "value": 0.6,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "turtle",
+      "name": "Turtle",
+      "description": "+10 flat gain, -50% gain multiplier",
+      "rarity": "Common",
+      "tags": ["gain", "defensive"],
+      "effects": [
+        {
+          "hook": "OnComputeGain",
+          "operation": "Add",
+          "value": 10,
+          "priority": 50
+        },
+        {
+          "hook": "OnComputeGain",
+          "operation": "Multiply",
+          "value": 0.5,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "hot_streak",
+      "name": "Hot Streak",
+      "description": "+25% gain when score > 500",
+      "rarity": "Common",
+      "tags": ["gain", "conditional"],
+      "effects": [
+        {
+          "hook": "OnComputeGain",
+          "operation": "Multiply",
+          "value": 1.25,
+          "priority": 100,
+          "condition": {
+            "type": "ScoreAbove",
+            "threshold": 500
+          }
+        }
+      ]
+    },
+    {
+      "id": "all_or_nothing",
+      "name": "All or Nothing",
+      "description": "Cannot bank, but +75% gain",
+      "rarity": "Common",
+      "tags": ["gain", "restriction"],
+      "effects": [
+        {
+          "hook": "OnComputeGain",
+          "operation": "Multiply",
+          "value": 1.75,
+          "priority": 100
+        },
+        {
+          "hook": "OnBank",
+          "operation": "Set",
+          "value": 0,
+          "priority": 0
+        }
+      ]
+    }
+  ]
+}

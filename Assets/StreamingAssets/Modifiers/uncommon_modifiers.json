@@ -1,0 +1,161 @@
+{
+  "modifiers": [
+    {
+      "id": "risk_taker",
+      "name": "Risk Taker",
+      "description": "+100% gain when risk > 50%",
+      "rarity": "Uncommon",
+      "tags": ["gain", "risk", "conditional"],
+      "effects": [
+        {
+          "hook": "OnComputeGain",
+          "operation": "Multiply",
+          "value": 2.0,
+          "priority": 100,
+          "condition": {
+            "type": "RiskAbove",
+            "threshold": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "early_bird",
+      "name": "Early Bird",
+      "description": "+200% gain on turns 1-3, then expires",
+      "rarity": "Uncommon",
+      "tags": ["gain", "temporary"],
+      "duration": 3,
+      "effects": [
+        {
+          "hook": "OnComputeGain",
+          "operation": "Multiply",
+          "value": 3.0,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "snowball",
+      "name": "Snowball",
+      "description": "+5% gain per turn (stacking)",
+      "rarity": "Uncommon",
+      "tags": ["gain", "scaling"],
+      "isStackable": true,
+      "effects": [
+        {
+          "hook": "OnComputeGain",
+          "operation": "AddPercent",
+          "value": 0.05,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "double_down",
+      "name": "Double Down",
+      "description": "x2 gain, x2 risk delta",
+      "rarity": "Uncommon",
+      "tags": ["gain", "risk", "aggressive"],
+      "effects": [
+        {
+          "hook": "OnComputeGain",
+          "operation": "Multiply",
+          "value": 2.0,
+          "priority": 100
+        },
+        {
+          "hook": "OnComputeRiskDelta",
+          "operation": "Multiply",
+          "value": 2.0,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "steady_hand",
+      "name": "Steady Hand",
+      "description": "Risk delta capped at 5% per turn",
+      "rarity": "Uncommon",
+      "tags": ["risk", "defensive"],
+      "effects": [
+        {
+          "hook": "OnComputeRiskDelta",
+          "operation": "Set",
+          "value": 0.05,
+          "priority": 200,
+          "condition": {
+            "type": "CounterAbove",
+            "counter": "_risk_delta_raw",
+            "threshold": 0.05
+          }
+        }
+      ]
+    },
+    {
+      "id": "tax_haven",
+      "name": "Tax Haven",
+      "description": "Banking has no tax (0% instead of 20%)",
+      "rarity": "Uncommon",
+      "tags": ["bank", "utility"],
+      "effects": [
+        {
+          "hook": "OnBank",
+          "operation": "Set",
+          "value": 0,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "adrenaline_junkie",
+      "name": "Adrenaline Junkie",
+      "description": "Push grants +150% gain instead of +100%",
+      "rarity": "Uncommon",
+      "tags": ["push", "aggressive"],
+      "effects": [
+        {
+          "hook": "OnPush",
+          "operation": "Multiply",
+          "value": 1.5,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "reckless_abandon",
+      "name": "Reckless Abandon",
+      "description": "Push costs only +10% risk instead of +15%",
+      "rarity": "Uncommon",
+      "tags": ["push", "utility"],
+      "effects": [
+        {
+          "hook": "OnPush",
+          "operation": "Multiply",
+          "value": 0.67,
+          "priority": 100
+        }
+      ]
+    },
+    {
+      "id": "hedge_fund",
+      "name": "Hedge Fund",
+      "description": "+25% gain for every 500 banked score",
+      "rarity": "Uncommon",
+      "tags": ["gain", "bank", "scaling"],
+      "effects": [
+        {
+          "hook": "OnComputeGain",
+          "operation": "AddPercent",
+          "value": 0.25,
+          "priority": 100,
+          "condition": {
+            "type": "CounterAbove",
+            "counter": "banked_tiers",
+            "threshold": 0
+          }
+        }
+      ]
+    }
+  ]
+}
